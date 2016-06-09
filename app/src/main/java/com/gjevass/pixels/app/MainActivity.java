@@ -1,22 +1,27 @@
 package com.gjevass.pixels.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.*;
+import com.gjevass.pixels.app.json.JSONParser;
+import com.gjevass.pixels.app.model.PosterModel;
 import com.gjevass.pixels.app.model.ViewModel;
 import com.gjevass.pixels.app.model.FrameModel;
 import com.gjevass.pixels.app.model.SprtModel;
 import com.gjevass.pixels.app.ui.NewsAdapter;
-import com.gjevass.pixels.app.util.DisplayUtil;
 import com.gjevass.pixels.app.util.ImageUtil;
+import com.gjevass.pixels.app.util.ScaleFactorCalc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
+    private NewsAdapter newsAdapter;
     private float scaleFactor;
 
     @Override
@@ -31,14 +36,14 @@ public class MainActivity extends Activity {
         ListView listView = (ListView) findViewById(R.id.listview);
         ImageView imageViewTop = (ImageView) findViewById(R.id.imageview_top);
 
+        imageViewBackground.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),R.string.back,Toast.LENGTH_LONG).show();
+            }
+        });
 
-        DisplayUtil displayUtil = new DisplayUtil(this);
-        Bitmap bitmapBackground = BitmapFactory.decodeResource(getResources(), R.drawable.news);
-        System.out.println("display width " + displayUtil.getWidth());
-        System.out.println("display height " + displayUtil.getHeight());
-        Bitmap bitmapBackgroundScalled = Bitmap.createScaledBitmap(bitmapBackground, displayUtil.getWidth(), displayUtil.getHeight(), true);
-        imageViewBackground.setImageBitmap(bitmapBackgroundScalled);
-
+        //news_best
         Bitmap bitmapTop = BitmapFactory.decodeResource(getResources(), R.drawable.news_best);
         ImageUtil imageUtil = new ImageUtil(bitmapTop, this);
         Bitmap bitmapTopScalled = Bitmap.createScaledBitmap(bitmapTop, Math.round(imageUtil.getRealWidth() * scaleFactor), Math.round( imageUtil.getRealHeight() * scaleFactor), true);
@@ -61,10 +66,41 @@ public class MainActivity extends Activity {
         imageList.add(viewModelEven);
         imageList.add(viewModelOdd);
 
-        listView.setAdapter(new NewsAdapter(getApplicationContext(), imageList));
+        newsAdapter = new NewsAdapter(getApplicationContext(), imageList);
+        listView.setAdapter(newsAdapter);
 
         FrameLayout.LayoutParams listViewLayoutParams = new FrameLayout.LayoutParams(listView.getLayoutParams());
         listViewLayoutParams.setMargins(Math.round(112 * scaleFactor), 0, 0, 0);
         listView.setLayoutParams(listViewLayoutParams);
+
+        PosterTask posterTask = new PosterTask();
+        posterTask.execute();
+    }
+
+    private class PosterTask extends AsyncTask<Void,Void, List<Bitmap>> {
+        private Context context = getApplicationContext();
+
+        @Override
+        protected List<Bitmap> doInBackground(Void... voids) {
+            JSONParser jsonParser = new JSONParser(context);
+            return jsonParser.getPosters();
+        }
+
+        @Override
+        protected void onPostExecute(List<Bitmap> posters) {
+            super.onPostExecute(posters);
+
+            List<PosterModel> posterModels = new ArrayList<PosterModel>();
+            for (int i = 0; i < posters.size(); i++) {
+                if(i % 2 == 0) {
+                    posterModels.add(new PosterModel( 30, 68, 1, scaleFactor, posters.get(i)));
+                }
+                else {
+                    posterModels.add(new PosterModel( 30, 68, -0.7f, scaleFactor, posters.get(i)));
+                }
+            }
+            newsAdapter.setPosters(posterModels);
+            newsAdapter.notifyDataSetChanged();
+        }
     }
 }
