@@ -7,16 +7,16 @@
 
     <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:adjustViewBounds="true"
-               android:layout_gravity="left"
-               android:id="@+id/image_view_even_background"/>
-
-    <ImageView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
                android:id="@+id/image_view_even_nws"/>
 
     <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:id="@+id/image_view_even_frame" />
+
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:adjustViewBounds="true"
+               android:layout_gravity="left"
+               android:id="@+id/image_view_even_background"/>
 
 </FrameLayout>

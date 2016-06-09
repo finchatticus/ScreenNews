@@ -3,48 +3,53 @@ package com.gjevass.pixels.app.model;
 import android.graphics.Bitmap;
 
 public class EvenViewModel {
-    private float rotate;
-    private int width;
-    private int height;
-    private int marginLeft;
-    private int marginTop;
-    private int resourceId;
-    private Bitmap bitmap;
+    private SprtModel sprtModel;
+    private FrameModel frameModel;
+    private Bitmap bitmapSprt;
+    private Bitmap bitmapFrame;
 
-    public EvenViewModel(float rotate, int width, int height, int marginLeft, int marginTop, int resourceId) {
-        this.rotate = rotate;
-        this.width = width;
-        this.height = height;
-        this.marginLeft = marginLeft;
-        this.marginTop = marginTop;
-        this.resourceId = resourceId;
+    public EvenViewModel(SprtModel sprtModel, FrameModel frameModel) {
+        this.sprtModel = sprtModel;
+        this.frameModel = frameModel;
+        this.bitmapSprt = sprtModel.getBitmap();
+        this.bitmapFrame= frameModel.getBitmap();
     }
 
-    public float getRotate() {
-        return rotate;
+    /*    public EvenViewModel(float rotateSprt, int widthSprt, int heightSprt, float scaleFactor, int resourceSprt, Context context) {
+        this.rotateSprt = rotateSprt;
+        this.widthSprt = widthSprt;
+        this.heightSprt = heightSprt;
+        this.resourceSprt = resourceSprt;
+
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceSprt);
+        DisplayUtil displayUtil = new DisplayUtil(context);
+
+        float density = displayUtil.getDensity();
+        this.heightSprt = Math.round((bitmap.getHeight() / density) * scaleFactor);
+        this.widthSprt = Math.round((bitmap.getWidth() / density) * scaleFactor);
+        this.bitmapSprt = Bitmap.createScaledBitmap(bitmap, this.widthSprt, this.heightSprt, true);
     }
 
-    public int getWidth() {
-        return width;
+    public EvenViewModel(float rotateSprt, int widthSprt, int heightSprt, float scaleFactor, Bitmap bitmapSprt, Context context) {
+        this.rotateSprt = rotateSprt;
+        this.heightSprt = Math.round(bitmapSprt.getHeight() * scaleFactor);
+        this.widthSprt = Math.round(bitmapSprt.getWidth() * scaleFactor);
+        this.bitmapSprt = Bitmap.createScaledBitmap(bitmapSprt, this.widthSprt, this.heightSprt, true);
+    }*/
+
+    public Bitmap getBitmapSprt() {
+        return bitmapSprt;
     }
 
-    public int getHeight() {
-        return height;
+    public SprtModel getSprtModel() {
+        return sprtModel;
     }
 
-    public int getMarginTop() {
-        return marginTop;
+    public FrameModel getFrameModel() {
+        return frameModel;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public int getResourceId() {
-        return resourceId;
-    }
-
-    public int getMarginLeft() {
-        return marginLeft;
+    public Bitmap getBitmapFrame() {
+        return bitmapFrame;
     }
 }
