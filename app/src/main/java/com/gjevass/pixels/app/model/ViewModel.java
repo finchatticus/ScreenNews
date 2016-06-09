@@ -2,13 +2,13 @@ package com.gjevass.pixels.app.model;
 
 import android.graphics.Bitmap;
 
-public class EvenViewModel {
+public class ViewModel {
     private SprtModel sprtModel;
     private FrameModel frameModel;
     private Bitmap bitmapSprt;
     private Bitmap bitmapFrame;
 
-    public EvenViewModel(SprtModel sprtModel, FrameModel frameModel) {
+    public ViewModel(SprtModel sprtModel, FrameModel frameModel) {
         this.sprtModel = sprtModel;
         this.frameModel = frameModel;
         this.bitmapSprt = sprtModel.getBitmap();

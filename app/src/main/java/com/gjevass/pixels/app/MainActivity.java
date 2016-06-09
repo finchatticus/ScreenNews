@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import com.gjevass.pixels.app.model.EvenViewModel;
+import com.gjevass.pixels.app.model.ViewModel;
 import com.gjevass.pixels.app.model.FrameModel;
 import com.gjevass.pixels.app.model.SprtModel;
 import com.gjevass.pixels.app.ui.NewsAdapter;
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         Bitmap bitmapTopScalled = Bitmap.createScaledBitmap(bitmapTop, Math.round(imageUtil.getRealWidth() * scaleFactor), Math.round( imageUtil.getRealHeight() * scaleFactor), true);
         imageViewTop.setImageBitmap(bitmapTopScalled);
 
-        ArrayList<Object> objects = new ArrayList<Object>();
+        ArrayList<ViewModel> imageList = new ArrayList<ViewModel>();
 
         System.out.println("scaleFactor " + scaleFactor);
         SprtModel sprtEven = new SprtModel(scaleFactor, R.drawable.news_poster_sprt_0, this);
@@ -53,19 +53,18 @@ public class MainActivity extends Activity {
         FrameModel frameEven = new FrameModel(6, 40, 1, scaleFactor, R.drawable.news_poster_frame, this);
         FrameModel frameOdd = new FrameModel(6, 40, -0.7f, scaleFactor, R.drawable.news_poster_frame, this);
 
-        EvenViewModel evenViewModel = new EvenViewModel(sprtEven, frameEven);
-        EvenViewModel evenViewModel1 = new EvenViewModel(sprtOdd, frameOdd);
+        ViewModel viewModelEven = new ViewModel(sprtEven, frameEven);
+        ViewModel viewModelOdd = new ViewModel(sprtOdd, frameOdd);
 
+        imageList.add(viewModelEven);
+        imageList.add(viewModelOdd);
+        imageList.add(viewModelEven);
+        imageList.add(viewModelOdd);
 
-        objects.add(evenViewModel);
-        objects.add(evenViewModel1);
-
-
-        listView.setAdapter(new NewsAdapter(getApplicationContext(), 0, objects));
+        listView.setAdapter(new NewsAdapter(getApplicationContext(), imageList));
 
         FrameLayout.LayoutParams listViewLayoutParams = new FrameLayout.LayoutParams(listView.getLayoutParams());
         listViewLayoutParams.setMargins(Math.round(112 * scaleFactor), 0, 0, 0);
         listView.setLayoutParams(listViewLayoutParams);
-
     }
 }
